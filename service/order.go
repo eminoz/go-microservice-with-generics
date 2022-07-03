@@ -30,3 +30,14 @@ func (o *OrderService) GetOrderById(ctx *fiber.Ctx) (interface{}, error) {
 	}
 	return model, nil
 }
+func (s *OrderService) UpdateOneOrder(ctx *fiber.Ctx) (interface{}, error) {
+	customerid := ctx.Params("id")
+	o := new(model.Order)
+	ctx.BodyParser(o)
+	filter, update := makeFilterAndUpdate("customerid", "$set", customerid, o)
+	updateOneById, err := s.OrderRepo.UpdateOneById(ctx, filter, update)
+	if err != nil {
+		return nil, err
+	}
+	return updateOneById.ModifiedCount, nil
+}

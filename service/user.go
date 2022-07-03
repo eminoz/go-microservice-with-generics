@@ -10,6 +10,7 @@ import (
 type Repository interface {
 	InsertOne(ctx *fiber.Ctx, model interface{}) (interface{}, error)
 	GetOneByID(ctx *fiber.Ctx, filter interface{}) (*mongo.SingleResult, error)
+	UpdateOneById(ctx *fiber.Ctx, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
 }
 
 type UserService struct {
@@ -41,4 +42,18 @@ func (s *UserService) GetUserById(ctx *fiber.Ctx) (interface{}, error) {
 		return nil, err
 	}
 	return model, nil
+}
+
+func (s *UserService) UpdateOneUser(ctx *fiber.Ctx) (interface{}, error) {
+	userID := ctx.Params("id")
+	id, _ := primitive.ObjectIDFromHex(userID)
+	m := new(model.User)
+	ctx.BodyParser(m)
+	filter, update := makeFilterAndUpdate("_id", "$set", id, m)
+
+	updateOneById, err := s.UserRepo.UpdateOneById(ctx, filter, update)
+	if err != nil {
+		return nil, err
+	}
+	return updateOneById, nil
 }

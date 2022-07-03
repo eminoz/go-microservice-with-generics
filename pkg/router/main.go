@@ -18,6 +18,7 @@ func Setup() *fiber.App {
 	u := f.Group("/user")
 	u.Post("/createuser", controller.SaveUser)
 	u.Get("/getOneUser/:id", controller.GetUserById)
+	u.Post("/updateOneUser/:id", controller.UpdateUser)
 
 	//Orders endpoints
 	orderCollection := repository.OrderCollection()
@@ -27,6 +28,7 @@ func Setup() *fiber.App {
 	o := f.Group("/order")
 	o.Post("/createorder", orderController.SaveOrder)
 	o.Get("/getOneOrder/:id", orderController.GetOrderById)
+	o.Post("/updateOneOrder/:id", orderController.UpdateOrder)
 	return f
 
 }

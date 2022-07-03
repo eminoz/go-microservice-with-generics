@@ -5,6 +5,7 @@ import "github.com/gofiber/fiber/v2"
 type UserService interface {
 	SaveUser(ctx *fiber.Ctx) (interface{}, error)
 	GetUserById(ctx *fiber.Ctx) (interface{}, error)
+	UpdateOneUser(ctx *fiber.Ctx) (interface{}, error)
 }
 type UserController struct {
 	UserServices UserService
@@ -23,4 +24,11 @@ func (u *UserController) GetUserById(ctx *fiber.Ctx) error {
 		return err
 	}
 	return ctx.JSON(getUserById)
+}
+func (u *UserController) UpdateUser(ctx *fiber.Ctx) error {
+	updateOneUser, err := u.UserServices.UpdateOneUser(ctx)
+	if err != nil {
+		return err
+	}
+	return ctx.JSON(updateOneUser)
 }

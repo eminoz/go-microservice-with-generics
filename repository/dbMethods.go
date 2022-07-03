@@ -17,3 +17,11 @@ func (u *GenericCollection) GetOneByID(ctx *fiber.Ctx, filter interface{}) (*mon
 	findOne := u.Collection.FindOne(ctx.Context(), filter)
 	return findOne, nil
 }
+
+func (u *GenericCollection) UpdateOneById(ctx *fiber.Ctx, filter interface{}, update interface{}) (*mongo.UpdateResult, error) {
+	updateOne, err := u.Collection.UpdateOne(ctx.Context(), filter, update)
+	if err != nil {
+		return nil, err
+	}
+	return updateOne, nil
+}
