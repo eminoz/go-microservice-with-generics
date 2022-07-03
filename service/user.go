@@ -4,7 +4,13 @@ import (
 	"github.com/eminoz/customer-service-with-go/model"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type Repository interface {
+	InsertOne(ctx *fiber.Ctx, model interface{}) (interface{}, error)
+	GetOneByID(ctx *fiber.Ctx, filter interface{}) (*mongo.SingleResult, error)
+}
 
 type UserService struct {
 	UserRepo Repository
