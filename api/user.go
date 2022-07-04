@@ -1,14 +1,12 @@
 package api
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/eminoz/customer-service-with-go/service"
+	"github.com/gofiber/fiber/v2"
+)
 
-type UserService interface {
-	SaveUser(ctx *fiber.Ctx) (interface{}, error)
-	GetUserById(ctx *fiber.Ctx) (interface{}, error)
-	UpdateOneUser(ctx *fiber.Ctx) (interface{}, error)
-}
 type UserController struct {
-	UserServices UserService
+	UserServices service.IUserServices
 }
 
 func (u *UserController) SaveUser(ctx *fiber.Ctx) error {

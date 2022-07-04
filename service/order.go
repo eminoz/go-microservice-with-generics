@@ -2,11 +2,17 @@ package service
 
 import (
 	"github.com/eminoz/customer-service-with-go/model"
+	"github.com/eminoz/customer-service-with-go/repository"
 	"github.com/gofiber/fiber/v2"
 )
 
+type IOrderService interface {
+	SaveOrder(ctx *fiber.Ctx) (interface{}, error)
+	GetOrderById(ctx *fiber.Ctx) (interface{}, error)
+	UpdateOneOrder(ctx *fiber.Ctx) (interface{}, error)
+}
 type OrderService struct {
-	OrderRepo Repository
+	OrderRepo repository.IBaseEntity
 }
 
 func (o *OrderService) SaveOrder(ctx *fiber.Ctx) (interface{}, error) {
@@ -30,12 +36,12 @@ func (o *OrderService) GetOrderById(ctx *fiber.Ctx) (interface{}, error) {
 	}
 	return model, nil
 }
-func (s *OrderService) UpdateOneOrder(ctx *fiber.Ctx) (interface{}, error) {
+func (o *OrderService) UpdateOneOrder(ctx *fiber.Ctx) (interface{}, error) {
 	customerid := ctx.Params("id")
-	o := new(model.Order)
-	ctx.BodyParser(o)
+	order := new(model.Order)
+	ctx.BodyParser(order)
 	filter, update := makeFilterAndUpdate("customerid", "$set", customerid, o)
-	updateOneById, err := s.OrderRepo.UpdateOneById(ctx, filter, update)
+	updateOneById, err := o.OrderRepo.UpdateOneById(ctx, filter, update)
 	if err != nil {
 		return nil, err
 	}

@@ -5,22 +5,26 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type GenericCollection struct {
+type User struct {
+	Db         *mongo.Database
+	Collection *mongo.Collection
+}
+type Order struct {
 	Db         *mongo.Database
 	Collection *mongo.Collection
 }
 
-func UserCollection() *GenericCollection {
+func UserCollection() *User {
 	getDatabase := database.GetDatabase()
-	return &GenericCollection{
+	return &User{
 		Db:         getDatabase,
 		Collection: getDatabase.Collection("user"),
 	}
 }
 
-func OrderCollection() *GenericCollection {
+func OrderCollection() *User {
 	getDatabase := database.GetDatabase()
-	return &GenericCollection{
+	return &User{
 		Db:         getDatabase,
 		Collection: getDatabase.Collection("order"),
 	}

@@ -2,19 +2,18 @@ package service
 
 import (
 	"github.com/eminoz/customer-service-with-go/model"
+	"github.com/eminoz/customer-service-with-go/repository"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Repository interface {
-	InsertOne(ctx *fiber.Ctx, model interface{}) (interface{}, error)
-	GetOneByID(ctx *fiber.Ctx, filter interface{}) (*mongo.SingleResult, error)
-	UpdateOneById(ctx *fiber.Ctx, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
+type IUserServices interface {
+	SaveUser(ctx *fiber.Ctx) (interface{}, error)
+	GetUserById(ctx *fiber.Ctx) (interface{}, error)
+	UpdateOneUser(ctx *fiber.Ctx) (interface{}, error)
 }
-
 type UserService struct {
-	UserRepo Repository
+	UserRepo repository.IBaseEntity
 }
 
 func (s *UserService) SaveUser(ctx *fiber.Ctx) (interface{}, error) {
