@@ -28,19 +28,11 @@ func (s *UserService) SaveUser(ctx *fiber.Ctx) (interface{}, error) {
 
 func (s *UserService) GetUserById(ctx *fiber.Ctx) (interface{}, error) {
 	userId := ctx.Params("id")
-	id, err2 := primitive.ObjectIDFromHex(userId)
-	if err2 != nil {
-		return nil, err2
-	}
-
-	filter := makeFilter("_id", id)
-	var model model.User
-	getOneByID, err := s.UserRepo.GetOneByID(ctx, filter)
-	getOneByID.Decode(&model)
+	oneByID, err := s.UserRepo.GetOneByID(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
-	return model, nil
+	return oneByID, nil
 }
 
 func (s *UserService) UpdateOneUser(ctx *fiber.Ctx) (interface{}, error) {

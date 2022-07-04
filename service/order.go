@@ -27,14 +27,11 @@ func (o *OrderService) SaveOrder(ctx *fiber.Ctx) (interface{}, error) {
 
 func (o *OrderService) GetOrderById(ctx *fiber.Ctx) (interface{}, error) {
 	userId := ctx.Params("id")
-	var model model.Order
-	filter := makeFilter("customerid", userId)
-	getOneByID, err := o.OrderRepo.GetOneByID(ctx, filter)
-	getOneByID.Decode(&model)
+	getOneByID, err := o.OrderRepo.GetOneByID(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
-	return model, nil
+	return getOneByID, nil
 }
 func (o *OrderService) UpdateOneOrder(ctx *fiber.Ctx) (interface{}, error) {
 	customerid := ctx.Params("id")
