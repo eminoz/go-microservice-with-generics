@@ -4,13 +4,13 @@ import (
 	"github.com/eminoz/customer-service-with-go/model"
 	"github.com/eminoz/customer-service-with-go/repository"
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type IUserServices interface {
 	SaveUser(ctx *fiber.Ctx) (interface{}, error)
 	GetUserById(ctx *fiber.Ctx) (interface{}, error)
 	UpdateOneUser(ctx *fiber.Ctx) (interface{}, error)
+	GetAllUser(ctx *fiber.Ctx) (interface{}, error)
 }
 type UserService struct {
 	UserRepo repository.IBaseEntity
@@ -36,15 +36,22 @@ func (s *UserService) GetUserById(ctx *fiber.Ctx) (interface{}, error) {
 }
 
 func (s *UserService) UpdateOneUser(ctx *fiber.Ctx) (interface{}, error) {
-	userID := ctx.Params("id")
-	id, _ := primitive.ObjectIDFromHex(userID)
+	id := ctx.Params("id")
 	m := new(model.User)
 	ctx.BodyParser(m)
-	filter, update := makeFilterAndUpdate("_id", "$set", id, m)
 
-	updateOneById, err := s.UserRepo.UpdateOneById(ctx, filter, update)
+	updateOneById, err := s.UserRepo.UpdateOneById(ctx, id, m)
 	if err != nil {
 		return nil, err
 	}
 	return updateOneById, nil
+}
+
+func (s *UserService) GetAllUser(ctx *fiber.Ctx) (interface{}, error) {
+
+	getAll, err := s.UserRepo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return getAll, nil
 }

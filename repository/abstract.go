@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func InsertOneEntity[I any](i I) I {
@@ -12,5 +12,7 @@ func InsertOneEntity[I any](i I) I {
 type IBaseEntity interface {
 	InsertOne(ctx *fiber.Ctx, model interface{}) (interface{}, error)
 	GetOneByID(ctx *fiber.Ctx, id string) (interface{}, error)
-	UpdateOneById(ctx *fiber.Ctx, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
+	UpdateOneById(ctx *fiber.Ctx, id string, update interface{}) (interface{}, error)
+	GetAll(ctx *fiber.Ctx) (interface{}, error)
+	IsExist(ctx *fiber.Ctx, filter bson.D) bool
 }

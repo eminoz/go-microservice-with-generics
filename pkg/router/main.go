@@ -19,6 +19,7 @@ func Setup() *fiber.App {
 	u.Post("/createuser", controller.SaveUser)
 	u.Get("/getOneUser/:id", controller.GetUserById)
 	u.Post("/updateOneUser/:id", controller.UpdateUser)
+	u.Get("/getalluser", controller.GelAllUser)
 
 	//Orders endpoints
 	orderCollection := repository.OrderCollection()

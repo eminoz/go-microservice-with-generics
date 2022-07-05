@@ -22,9 +22,9 @@ func UserCollection() *User {
 	}
 }
 
-func OrderCollection() *User {
+func OrderCollection() *Order {
 	getDatabase := database.GetDatabase()
-	return &User{
+	return &Order{
 		Db:         getDatabase,
 		Collection: getDatabase.Collection("order"),
 	}

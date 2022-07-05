@@ -30,3 +30,12 @@ func (u *UserController) UpdateUser(ctx *fiber.Ctx) error {
 	}
 	return ctx.JSON(updateOneUser)
 }
+
+func (u *UserController) GelAllUser(ctx *fiber.Ctx) error {
+	getAllUser, err := u.UserServices.GetAllUser(ctx)
+	if err != nil {
+		return err
+	}
+	return ctx.JSON(getAllUser)
+
+}
