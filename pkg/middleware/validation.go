@@ -7,13 +7,12 @@ import (
 )
 
 func UserValidation() fiber.Handler {
-	m := new(model.User)
+	u := new(model.User)
 
 	validate := validator.New()
 	return func(ctx *fiber.Ctx) error {
-
-		ctx.BodyParser(m)
-		err := validate.Struct(m)
+		ctx.BodyParser(u)
+		err := validate.Struct(u)
 		if err != nil {
 			return ctx.Status(fiber.StatusBadRequest).JSON(err.Error())
 		}
