@@ -5,7 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func InsertOneEntity[I any](i I) I {
+func InsertOneEntity[I IBaseEntity](i I) I {
 	return i
 }
 

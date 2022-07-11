@@ -15,7 +15,7 @@ type Login struct {
 }
 
 type UserDal struct {
-	Id      string `json:"id" bson:"id"`
+	ID      string `json:"id,omitempty" bson:"_id,omitempty"`
 	Name    string `json:"name" bson:"name"`
 	Surname string `json:"surname" bson:"surname"`
 	Email   string `json:"email" bson:"email"`

@@ -8,25 +8,37 @@ import (
 )
 
 var UserModel model.User
+var UserDal model.UserDal
 
-func (u *User) InsertOne(ctx *fiber.Ctx, model interface{}) (interface{}, error) {
+func (u *User) InsertOne(ctx *fiber.Ctx, models interface{}) (interface{}, error) {
+	userModel := models.(*model.User)
 
-	insertOne, err := u.Collection.InsertOne(ctx.Context(), model)
+	emailFilter := makeFilter("email", userModel.Email) // make new bson filter
+
+	isExist := u.IsExist(ctx, emailFilter) // check if user exist this email
+	if isExist {
+		return nil, &fiber.Error{Code: 409, Message: "Email already exist"}
+	}
+
+	insertOne, err := u.Collection.InsertOne(ctx.Context(), models) //insert new user
 	if err != nil {
 		return nil, err
 	}
-	return insertOne.InsertedID, nil
+	filter := makeFilter("_id", insertOne.InsertedID)
+
+	u.Collection.FindOne(ctx.Context(), filter).Decode(&UserDal) //find user after insert and decode that user userDal
+	return UserDal, nil
 
 }
 func (u *User) GetOneByID(ctx *fiber.Ctx, id string) (interface{}, error) {
 	userId, _ := primitive.ObjectIDFromHex(id)
 	filter := makeFilter("_id", userId)
 
-	err := u.Collection.FindOne(ctx.Context(), filter).Decode(&UserModel)
+	err := u.Collection.FindOne(ctx.Context(), filter).Decode(&UserDal)
 	if err != nil {
 		return nil, err
 	}
-	return UserModel, nil
+	return UserDal, nil
 }
 
 func (u *User) UpdateOneById(ctx *fiber.Ctx, id string, update interface{}) (interface{}, error) {
