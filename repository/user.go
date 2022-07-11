@@ -46,7 +46,7 @@ func (u *User) UpdateOneById(ctx *fiber.Ctx, id string, update interface{}) (int
 	userid, _ := primitive.ObjectIDFromHex(id)
 	filter := makeFilter("_id", userid)
 	isExist := u.IsExist(ctx, filter)
-	if isExist == true {
+	if isExist {
 		fil, up := makeFilterAndUpdate("_id", "$set", userid, update)
 
 		updateOne, err := u.Collection.UpdateOne(ctx.Context(), fil, up)

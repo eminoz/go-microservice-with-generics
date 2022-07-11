@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/eminoz/customer-service-with-go/api"
+	"github.com/eminoz/customer-service-with-go/pkg/middleware"
 	"github.com/eminoz/customer-service-with-go/repository"
 	"github.com/eminoz/customer-service-with-go/service"
 	"github.com/gofiber/fiber/v2"
@@ -16,7 +17,7 @@ func Setup() *fiber.App {
 	userService := service.UserService{UserRepo: userEntity}
 	controller := api.UserController{UserServices: &userService}
 	u := f.Group("/user")
-	u.Post("/createuser", controller.SaveUser)
+	u.Post("/createuser", middleware.UserValidation(), controller.SaveUser)
 	u.Get("/getOneUser/:id", controller.GetUserById)
 	u.Post("/updateOneUser/:id", controller.UpdateUser)
 	u.Get("/getalluser", controller.GelAllUser)

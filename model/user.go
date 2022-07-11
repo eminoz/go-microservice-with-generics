@@ -3,10 +3,10 @@ package model
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type User struct {
-	Name     string `json:"name"`
+	Name     string `validate:"required,omitempty"`
 	Surname  string `json:"surname"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password string `validate:"required,omitempty,gte=7,lte=130"`
 }
 type Login struct {
 	ID       primitive.ObjectID `json:"id" bson:"_id,omitempty"`
